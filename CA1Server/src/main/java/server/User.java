@@ -55,7 +55,7 @@ public class User implements Observer {
         if (arg instanceof User)
             u = (User) arg;
 
-        if (u == null) return;
+        if (u == null || u == this) return;
 
         PrintWriter writer = new PrintWriter(outputStream);
         writer.flush();
