@@ -51,4 +51,10 @@ public class User implements Observer {
     public PrintStream getWriter() {
         return writer;
     }
+
+    public void write(String msg) {
+        writer.println(msg);
+        writer.flush();
+    }
+
 }
