@@ -15,11 +15,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ChatServer.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/server/ChatServer.java">
+      <file leaf-file-name="User.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/server/User.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="618">
-              <caret line="43" column="18" lean-forward="false" selection-start-line="43" selection-start-column="18" selection-end-line="43" selection-end-column="18" />
+            <state relative-caret-position="1252">
+              <caret line="39" column="0" lean-forward="false" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -45,9 +45,9 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/main/java/server/Client.java" />
-        <option value="$PROJECT_DIR$/src/main/java/server/User.java" />
         <option value="$PROJECT_DIR$/../.gitignore" />
         <option value="$PROJECT_DIR$/src/main/java/server/ChatServer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/server/User.java" />
       </list>
     </option>
   </component>
@@ -468,12 +468,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1487059484947</updated>
-      <workItem from="1487059486581" duration="4724000" />
+      <workItem from="1487059486581" duration="5528000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4724000" />
+    <option name="totallyTimeSpent" value="5528000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-13" y="-13" width="2906" height="1566" extended-state="6" />
@@ -527,26 +527,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/server/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="7" column="3" lean-forward="true" selection-start-line="7" selection-start-column="3" selection-end-line="7" selection-end-column="3" />
-          <folding>
-            <marker date="1487064460512" expanded="true" signature="24:125" ph="..." />
-            <marker date="1487064460512" expanded="true" signature="127:187" ph="/**...*/" />
-            <marker date="1487064460512" expanded="true" signature="390:461" ph="{...}" />
-            <marker date="1487064460512" expanded="true" signature="503:721" ph="{...}" />
-            <marker date="1487064460512" expanded="true" signature="765:987" ph="{...}" />
-            <marker date="1487064460512" expanded="false" signature="1020:1031" ph=" { " />
-            <marker date="1487064460512" expanded="false" signature="1047:1053" ph=" }" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/server/ChatServer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="618">
           <caret line="43" column="18" lean-forward="false" selection-start-line="43" selection-start-column="18" selection-end-line="43" selection-end-column="18" />
+          <folding>
+            <marker date="1487065451145" expanded="true" signature="24:311" ph="..." />
+            <marker date="1487065451145" expanded="true" signature="498:525" ph="/**...*/" />
+            <marker date="1487065451145" expanded="true" signature="712:771" ph="{...}" />
+            <marker date="1487065451145" expanded="true" signature="822:1240" ph="{...}" />
+            <marker date="1487065451145" expanded="true" signature="1314:2548" ph="{...}" />
+            <marker date="1487065451145" expanded="true" signature="1863:1945" ph="//..." />
+            <marker date="1487065451145" expanded="true" signature="2612:2713" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/server/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1252">
+          <caret line="39" column="0" lean-forward="false" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
