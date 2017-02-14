@@ -27,9 +27,9 @@ public class ChatServer extends Observable {
 
     private final String host;
     private final int port;
-    private static ArrayList<User> users = new ArrayList<>();
+    public static ArrayList<User> users = new ArrayList<>();
     
-    private static BlockingQueue<Message> messages = new ArrayBlockingQueue<>(128);
+    public static BlockingQueue<Message> messages = new ArrayBlockingQueue<>(128);
 
     public ChatServer(String host, int port) {
         this.host = host;
