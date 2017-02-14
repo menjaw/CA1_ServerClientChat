@@ -43,9 +43,12 @@ public class Message {
     }
 
     private User findUser(String s) {
+        for (int i = 0; i < ChatServer.users.size(); i++) {
+            if(ChatServer.users.get(i).getUsername().equalsIgnoreCase(s))
+                return ChatServer.users.get(i);
+        }
+
         return null;
-        // make arraylist with users static
-        // find user in it and then return said user.
     }
 
     public User getSender() {
