@@ -49,6 +49,7 @@ public class ChatServer extends Observable {
         socket.bind(new InetSocketAddress(host, port));
 
         System.out.println("Server listening on port " + port);
+        executor.execute(new MessageConsumer());
         Socket connection;
         while ((connection = socket.accept()) != null) {
             handleConnection(connection);
