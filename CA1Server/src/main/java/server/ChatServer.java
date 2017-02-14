@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -30,6 +32,8 @@ public class ChatServer extends Observable {
     public static ArrayList<User> users = new ArrayList<>();
     
     public static BlockingQueue<Message> messages = new ArrayBlockingQueue<>(128);
+    
+    private static ExecutorService executor = Executors.newCachedThreadPool();
 
     public ChatServer(String host, int port) {
         this.host = host;
@@ -69,6 +73,7 @@ public class ChatServer extends Observable {
                     users.add(newGuy);
                     addObserver(newGuy);
                     notifyObservers(newGuy);
+                    executor.execute(newGuy);
 
                     break;
                 case "MSG":
