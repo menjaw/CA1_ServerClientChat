@@ -11,6 +11,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -25,7 +27,9 @@ public class ChatServer extends Observable {
 
     private final String host;
     private final int port;
-    private ArrayList<User> users = new ArrayList<>();
+    private static ArrayList<User> users = new ArrayList<>();
+    
+    private static BlockingQueue<Message> messages = new ArrayBlockingQueue<>(128);
 
     public ChatServer(String host, int port) {
         this.host = host;
