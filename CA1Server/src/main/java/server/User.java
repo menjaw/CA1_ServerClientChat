@@ -1,6 +1,9 @@
 package server;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Observable;
 import java.util.Observer;
@@ -10,7 +13,7 @@ import java.util.Observer;
  *
  * @author Niki
  */
-public class User implements Observer {
+public class User implements Runnable, Observer {
 
     private Socket socket;
     private String username;
@@ -36,8 +39,20 @@ public class User implements Observer {
         if (arg instanceof User) u = (User) arg;
         if (u == null || u == this) return;
 
-        writer.println("UPDATE#" + u.username);
-        writer.flush();
+        write("UPDATE#" + u.username);
+    }
+
+    @Override
+    public void run() {
+        try {
+            String s;
+            while (!socket.isClosed() && (s = reader.readLine()) != null) {
+                Message msg = new Message(this, s);
+                ChatServer.messages.put(msg);
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getUsername() {
