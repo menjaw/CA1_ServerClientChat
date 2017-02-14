@@ -15,6 +15,8 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -30,9 +32,9 @@ public class ChatServer extends Observable {
     private final String host;
     private final int port;
     public static ArrayList<User> users = new ArrayList<>();
-    
+
     public static BlockingQueue<Message> messages = new ArrayBlockingQueue<>(128);
-    
+
     private static ExecutorService executor = Executors.newCachedThreadPool();
 
     public ChatServer(String host, int port) {
@@ -77,25 +79,36 @@ public class ChatServer extends Observable {
 
                     break;
                 case "MSG":
-                    handleMessage(strings);
+                    //TODO: What happens here now?
                     break;
                 default:
                     break;
             }
         }
-        connection.close();
     }
 
-    private void handleMessage(String[] strings) {
-        if (strings[1].equals("ALL")) {
-            for (User u : users) {
-                u.write("MSG#" + "[Sender]#" + strings[2]);
-            }
-        } else {
-            for (User u : users) {
-                if (u.getUsername().equalsIgnoreCase(strings[1])) {
-                    u.write("MSG#" + "[Sender]#" + strings[2]);
-                    break;
+    public static class MessageConsumer implements Runnable {
+        @Override
+        public void run() {
+            Message msg;
+            while (true) {
+                if (messages.peek() != null) {
+                    try {
+                        msg = messages.take();
+                        if (msg.getReceiver() == null) {
+                            for (User user : users) {
+                                user.write(msg.toString());
+                            }
+                        } else {
+                            for (User user : users) {
+                                if (user.getUsername().equals(msg.getReceiver().getUsername())) {
+                                    user.write(msg.toString());
+                                }
+                            }
+                        }
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(ChatServer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         }
