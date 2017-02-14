@@ -52,7 +52,7 @@ public class User implements Runnable, Observer {
 
                 System.out.printf("%s, %s, %s\n",
                                   msg.getSender().getUsername(),
-                                  msg.getReceiver().getUsername(),
+                                  msg.getReceiver() != null ? msg.getReceiver().getUsername() : "ALL",
                                   msg.getData()); // debug
             }
         } catch (IOException | InterruptedException e) {
