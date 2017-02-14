@@ -1,3 +1,5 @@
+package server;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -77,7 +79,12 @@ public class ChatServer {
                 case "LOGIN":
                     break;
                 case "MSG":
-                    writer.print("MSG#");
+                    switch (strings[1]) {
+                        case "ALL":
+                            writer.print("MSG#"+strings[2]);
+                        default:
+                            writer.print("MSG#"+strings[2]);
+                    }
                     break;
                 default:
                     break;
