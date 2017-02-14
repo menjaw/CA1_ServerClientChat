@@ -1,6 +1,5 @@
 package server;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,6 +9,7 @@ import java.io.PrintStream;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -24,17 +24,13 @@ public class ChatServer {
 
     private final String host;
     private final int port;
+    private ArrayList<User> users= new ArrayList<>();
 
     public ChatServer(String host, int port) {
         this.host = host;
         this.port = port;
     }
 
-    /**
-     * Starts running the server.
-     *
-     * @throws IOException If network or I/O or something goes wrong.
-     */
     public void startServer() throws IOException {
         // Create a new unbound socket
         ServerSocket socket = new ServerSocket();
@@ -42,26 +38,13 @@ public class ChatServer {
         socket.bind(new InetSocketAddress(host, port));
 
         System.out.println("Server listening on port " + port);
-
-        // Wait for a connection
         Socket connection;
         while ((connection = socket.accept()) != null) {
-            // Handle the connection in the #handleConnection method below
             handleConnection(connection);
-            // Now the connection has been handled and we've sent our reply
-            // -- So now the connection can be closed so we can open more
-            //    sockets in the future
             connection.close();
         }
     }
 
-    /**
-     * Handles a connection from a client by simply echoing back the same thing
-     * the client sent.
-     *
-     * @param connection The Socket connection which is connected to the client.
-     * @throws IOException If network or I/O or something goes wrong.
-     */
     private void handleConnection(Socket connection) throws IOException {
         OutputStream output = connection.getOutputStream();
         InputStream input = connection.getInputStream();
@@ -77,28 +60,30 @@ public class ChatServer {
         if (strings.length >= 1) {
             switch (strings[0]) {
                 case "LOGIN":
+                    //TODO: setup new userSocket 
+                    //TODO: add new user to userlist
+                    users.add(new User(connection, strings[1]));
+
+                    writer.print("UPDATE#" + strings[1]);
                     break;
                 case "MSG":
                     switch (strings[1]) {
                         case "ALL":
-                            writer.print("MSG#"+strings[2]);
+                            writer.print("MSG#" + "[Sender]#" + strings[2]);
                         default:
-                            writer.print("MSG#"+strings[2]);
+                            writer.print("MSG#" + "[Sender]#" + strings[2]);
                     }
                     break;
                 default:
                     break;
-
             }
         }
         connection.close();
-
     }
 
     public static void main(String[] args) throws IOException {
         ChatServer server = new ChatServer("localhost", 8080);
 
-        // This method will block, forever!
         server.startServer();
     }
 
