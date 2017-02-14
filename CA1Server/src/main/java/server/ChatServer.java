@@ -70,6 +70,12 @@ public class ChatServer extends Observable {
         if (strings.length >= 1) {
             switch (strings[0]) {
                 case "LOGIN":
+                    for (User user : users) {
+                        if (user.getUsername().equalsIgnoreCase(strings[1])) {
+                            //TODO: Fail
+                            break;
+                        }
+                    }
                     //TODO: setup new userSocket 
                     User newGuy = new User(connection, strings[1]);
                     users.add(newGuy);
@@ -77,6 +83,12 @@ public class ChatServer extends Observable {
                     notifyObservers(newGuy);
                     executor.execute(newGuy);
 
+                    //TODO: OK message
+                    String okMsg = "OK#";
+                    for (User user : users) {
+                        okMsg.concat(user.getUsername() + "#");
+                    }
+                    newGuy.write(okMsg);
                     break;
                 case "MSG":
                     //TODO: What happens here now?
@@ -88,27 +100,23 @@ public class ChatServer extends Observable {
     }
 
     public static class MessageConsumer implements Runnable {
+
         @Override
         public void run() {
             Message msg;
             while (true) {
-                if (messages.peek() != null) {
-                    try {
-                        msg = messages.take();
-                        if (msg.getReceiver() == null) {
-                            for (User user : users) {
-                                user.write(msg.toString());
-                            }
-                        } else {
-                            for (User user : users) {
-                                if (user.getUsername().equals(msg.getReceiver().getUsername())) {
-                                    user.write(msg.toString());
-                                }
-                            }
+                try {
+                    msg = messages.take();
+                    if (msg.getReceiver() == null) {
+                        for (User user : users) {
+                            user.write(msg.toString());
                         }
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(ChatServer.class.getName()).log(Level.SEVERE, null, ex);
+                    } else {
+                        msg.getReceiver().write(msg.toString());
                     }
+
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(ChatServer.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
