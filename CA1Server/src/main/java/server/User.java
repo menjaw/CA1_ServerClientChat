@@ -52,7 +52,7 @@ public class User implements Observer {
         return writer;
     }
 
-    public void write(String msg) {
+    public synchronized void write(String msg) {
         writer.println(msg);
         writer.flush();
     }
