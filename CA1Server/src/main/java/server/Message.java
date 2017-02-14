@@ -62,7 +62,7 @@ public class Message {
 
     @Override
     public String toString() {
-        return "MSG#" + sender + "#" + data;
+        return "MSG#" + sender.getUsername() + "#" + data;
     }
 
 }
