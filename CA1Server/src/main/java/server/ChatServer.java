@@ -83,11 +83,10 @@ public class ChatServer extends Observable {
                     notifyObservers(newGuy);
                     executor.execute(newGuy);
 
-                    
                     //TODO: OK message
-                    String okMsg="OK#";
+                    String okMsg = "OK#";
                     for (User user : users) {
-                        okMsg.concat(user.getUsername()+"#");
+                        okMsg.concat(user.getUsername() + "#");
 
                     }
                     newGuy.write(okMsg);
@@ -112,12 +111,9 @@ public class ChatServer extends Observable {
                     if (msg.getReceiver() == null) {
                         for (User user : users) {
                             user.write(msg.toString());
-
                         }
-
                     } else {
                         msg.getReceiver().write(msg.toString());
-
                     }
                 } catch (InterruptedException ex) {
                     Logger.getLogger(ChatServer.class.getName()).log(Level.SEVERE, null, ex);
