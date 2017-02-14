@@ -10,6 +10,7 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Observable;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -20,11 +21,11 @@ import java.util.ArrayList;
  *
  * @author Jamie
  */
-public class ChatServer {
+public class ChatServer extends Observable {
 
     private final String host;
     private final int port;
-    private ArrayList<User> users= new ArrayList<>();
+    private ArrayList<User> users = new ArrayList<>();
 
     public ChatServer(String host, int port) {
         this.host = host;
@@ -41,7 +42,6 @@ public class ChatServer {
         Socket connection;
         while ((connection = socket.accept()) != null) {
             handleConnection(connection);
-            connection.close();
         }
     }
 
@@ -61,18 +61,14 @@ public class ChatServer {
             switch (strings[0]) {
                 case "LOGIN":
                     //TODO: setup new userSocket 
-                    //TODO: add new user to userlist
-                    users.add(new User(connection, strings[1]));
+                    User newGuy = new User(connection, strings[1]);
+                    users.add(newGuy);
+                    addObserver(newGuy);
+                    notifyObservers(newGuy);
 
-                    writer.print("UPDATE#" + strings[1]);
                     break;
                 case "MSG":
-                    switch (strings[1]) {
-                        case "ALL":
-                            writer.print("MSG#" + "[Sender]#" + strings[2]);
-                        default:
-                            writer.print("MSG#" + "[Sender]#" + strings[2]);
-                    }
+                    handleMessage(strings);
                     break;
                 default:
                     break;
@@ -81,8 +77,23 @@ public class ChatServer {
         connection.close();
     }
 
+    private void handleMessage(String[] strings) {
+        if (strings[1].equals("ALL")) {
+            for (User u : users) {
+                u.write("MSG#" + "[Sender]#" + strings[2]);
+            }
+        } else {
+            for (User u : users) {
+                if (u.getUsername().equalsIgnoreCase(strings[1])) {
+                    u.write("MSG#" + "[Sender]#" + strings[2]);
+                    break;
+                }
+            }
+        }
+    }
+
     public static void main(String[] args) throws IOException {
-        ChatServer server = new ChatServer("localhost", 8080);
+        ChatServer server = new ChatServer("localhost", 8081);
 
         server.startServer();
     }
