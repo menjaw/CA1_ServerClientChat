@@ -46,9 +46,14 @@ public class User implements Runnable, Observer {
     public void run() {
         try {
             String s;
-            while (!socket.isClosed() && (s = reader.readLine()) != null) {
+            while ((s = reader.readLine()) != null) {
                 Message msg = new Message(this, s);
                 ChatServer.messages.put(msg);
+
+                System.out.printf("%s, %s, %s\n",
+                                  msg.getSender().getUsername(),
+                                  msg.getReceiver().getUsername(),
+                                  msg.getData()); // debug
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
