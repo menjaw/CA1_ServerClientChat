@@ -1,18 +1,11 @@
 package server;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintStream;
+import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Observable;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -84,6 +77,7 @@ public class ChatServer extends Observable {
             User newGuy = new User(connection, strings[1]);
             users.add(newGuy);
             addObserver(newGuy);
+            setChanged();
             notifyObservers(newGuy);
             executor.execute(newGuy);
 

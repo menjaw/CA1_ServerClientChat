@@ -36,6 +36,7 @@ public class User implements Runnable, Observer {
     @Override
     public void update(Observable o, Object arg) {
         User u = null;
+
         if (arg instanceof User) u = (User) arg;
         if (u == null || u == this) return;
 
