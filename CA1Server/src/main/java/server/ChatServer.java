@@ -41,6 +41,8 @@ public class ChatServer extends Observable {
 
         System.out.println("Server listening on port " + port);
         executor.execute(new MessageConsumer());
+        
+        executor.execute(new DeleteConsumer(this));
         Socket connection;
         while ((connection = socket.accept()) != null) {
             handleConnection(connection);
@@ -78,7 +80,7 @@ public class ChatServer extends Observable {
             users.add(newGuy);
             addObserver(newGuy);
             setChanged();
-            notifyObservers(newGuy);
+            notifyObservers(new Notification(newGuy,Notification.Type.UPDATE));
             executor.execute(newGuy);
 
             String okMsg = "OK";
@@ -90,8 +92,10 @@ public class ChatServer extends Observable {
         }
     }
 
+        
     public static void main(String[] args) throws IOException {
         ChatServer server = new ChatServer("localhost", 8081);
         server.startServer();
+        
     }
 }
