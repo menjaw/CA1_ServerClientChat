@@ -24,8 +24,6 @@ public class ChatServer extends Observable {
     private final int port;
     public static ArrayList<User> users = new ArrayList<>();
 
-    
-
     private static ExecutorService executor = Executors.newCachedThreadPool();
 
     public ChatServer(String host, int port) {
@@ -41,7 +39,7 @@ public class ChatServer extends Observable {
 
         System.out.println("Server listening on port " + port);
         executor.execute(new MessageConsumer());
-        
+
         executor.execute(new DeleteConsumer(this));
         Socket connection;
         while ((connection = socket.accept()) != null) {
@@ -79,8 +77,7 @@ public class ChatServer extends Observable {
             User newGuy = new User(connection, strings[1]);
             users.add(newGuy);
             addObserver(newGuy);
-            setChanged();
-            notifyObservers(new Notification(newGuy,Notification.Type.UPDATE));
+            setChangedAndNotify(new Notification(newGuy, Notification.Type.UPDATE));
             executor.execute(newGuy);
 
             String okMsg = "OK";
@@ -92,10 +89,13 @@ public class ChatServer extends Observable {
         }
     }
 
-        
+    public synchronized void setChangedAndNotify(Notification n) {
+        setChanged();
+        notifyObservers(n);
+    }
+
     public static void main(String[] args) throws IOException {
         ChatServer server = new ChatServer("localhost", 8081);
         server.startServer();
-        
     }
 }
