@@ -8,14 +8,14 @@ package server;
 public class Notification {
 
     public User user;
-    public NotificationType type;
+    public Type type;
 
-    public Notification(User user, NotificationType type) {
+    public Notification(User user, Type type) {
         this.user = user;
         this.type = type;
     }
 
-    public enum NotificationType {
+    public enum Type {
         DELETE,
         UPDATE
     }

@@ -40,6 +40,8 @@ public class User implements Runnable, Observer {
         if (arg instanceof User) u = (User) arg;
         if (u == null || u == this) return;
 
+        if(Notification.NotificationType.UPDATE)
+
         write("UPDATE#" + u.username);
     }
 
