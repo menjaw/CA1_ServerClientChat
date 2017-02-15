@@ -27,13 +27,14 @@ public class DeleteConsumer implements Runnable {
                 if (!user.isConnected()) {
                     cs.deleteObserver(user);
                     ChatServer.users.remove(user);
-                    cs.notifyObservers(new Notification(user, Notification.Type.UPDATE));
+                    cs.setChangedAndNotify(
+                            new Notification(user, Notification.Type.UPDATE));
                 }
             }
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
-                Logger.getLogger(DeleteConsumer.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
             }
         }
     }
