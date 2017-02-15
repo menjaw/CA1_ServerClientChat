@@ -35,14 +35,15 @@ public class User implements Runnable, Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        User u = null;
+        Notification n = null;
 
-        if (arg instanceof User) u = (User) arg;
-        if (u == null || u == this) return;
+        if (arg instanceof Notification) n = (Notification) arg;
+        if (n == null || n.user == this) return;
 
-        if(Notification.NotificationType.UPDATE)
-
-        write("UPDATE#" + u.username);
+        if (n.type == Notification.Type.UPDATE)
+            write("UPDATE#" + n.user.username);
+        else if (n.type == Notification.Type.DELETE)
+            write("DELETE#" + n.user.username);
     }
 
     @Override
@@ -55,7 +56,8 @@ public class User implements Runnable, Observer {
 
                 System.out.printf("%s, %s, %s\n",
                                   msg.getSender().getUsername(),
-                                  msg.getReceiver() != null ? msg.getReceiver().getUsername() : "ALL",
+                                  msg.getReceiver() != null ? msg.getReceiver
+                                          ().getUsername() : "ALL",
                                   msg.getData()); // debug
             }
         } catch (IOException | InterruptedException e) {
