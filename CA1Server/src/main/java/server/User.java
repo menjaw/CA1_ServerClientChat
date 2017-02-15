@@ -67,7 +67,7 @@ public class User implements Runnable, Observer {
     }
 
     public synchronized void write(String msg) {
-        writer.println(msg + "\n");
+        writer.println(msg);
     }
 
     public String getUsername() {
