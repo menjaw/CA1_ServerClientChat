@@ -1,9 +1,11 @@
 package server;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Scanner;
 
 /**
  * Created by Niki on 2017-02-14.
@@ -14,8 +16,8 @@ public class User implements Runnable, Observer {
 
     private Socket socket;
     private String username;
-    private BufferedReader reader;
-    private OutputStream writer;
+    private Scanner reader;
+    private PrintWriter writer;
     private boolean connected;
 
     public User(Socket socket, String username) {
@@ -23,9 +25,8 @@ public class User implements Runnable, Observer {
         this.username = username;
 
         try {
-            reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-            writer = this.socket.getOutputStream();
-            writer.flush();
+            reader = new Scanner(this.socket.getInputStream());
+            writer = new PrintWriter(this.socket.getOutputStream(), true);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -50,7 +51,7 @@ public class User implements Runnable, Observer {
     public void run() {
         try {
             String s;
-            while ((s = reader.readLine()) != null) {
+            while ((s = reader.nextLine()) != null) {
                 Message msg = new Message(this, s);
                 MessageConsumer.messages.put(msg);
 
@@ -60,46 +61,40 @@ public class User implements Runnable, Observer {
                                           ().getUsername() : "ALL",
                                   msg.getData()); // debug
             }
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            ChatServer.removeUser(this);
         }
     }
 
     public synchronized void write(String msg) {
-        try {
-            writer.write((msg + "\n").getBytes());
-            writer.flush();
-        } catch (IOException e) {
-            connected = false;
-        }
+        writer.println(msg + "\n");
     }
 
     public String getUsername() {
         return username;
     }
 
-    public boolean isConnected() {
+    // BufferedReader eats all my exceptions!
+    /*public boolean isConnected() {
         // http://stackoverflow.com/a/11736683
         // SOCKETS ARE STUPID!?!?!?!
 
         // waits until disconnected..
         //return socket.getInputStream().read() != -1;
 
-        /*
-        try {
-            // This method works but is fucked up like everything about a socket
-            socket.getOutputStream().write(new byte[1]);
-            socket.getOutputStream().flush();
-            socket.getOutputStream().write(new byte[1]);
-            socket.getOutputStream().flush();
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
-        */
+        //try {
+        //    This method works but is fucked up like everything about a socket
+        //    socket.getOutputStream().write(new byte[1]);
+        //    socket.getOutputStream().flush();
+        //    socket.getOutputStream().write(new byte[1]);
+        //    socket.getOutputStream().flush();
+        //    return true;
+        //} catch (IOException e) {
+        //    e.printStackTrace();
+        //}
+        //return false;
 
         // FUCK SOCKETS!
         return connected;
-    }
+    }*/
 }

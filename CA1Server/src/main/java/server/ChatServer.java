@@ -1,11 +1,15 @@
 package server;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 import java.util.Observable;
+import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -41,7 +45,7 @@ public class ChatServer extends Observable {
         System.out.println("Server listening on port " + port);
         executor.execute(new MessageConsumer());
 
-        executor.execute(new DeleteConsumer(this));
+        //executor.execute(new DeleteConsumer(this));
         Socket connection;
         while ((connection = socket.accept()) != null) {
             handleConnection(connection);
@@ -53,8 +57,8 @@ public class ChatServer extends Observable {
         InputStream input = connection.getInputStream();
 
         // Read whatever comes in
-        BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-        String line = reader.readLine();
+        Scanner reader = new Scanner(input);
+        String line = reader.nextLine();
 
         // Print the same line we read to the client
         PrintStream writer = new PrintStream(output);
@@ -98,12 +102,21 @@ public class ChatServer extends Observable {
         notifyObservers(n);
     }
 
+    public static ChatServer server;
+
     public static void main(String[] args) throws IOException {
         String host = "localhost";
-        if(args.length > 0)
+        if (args.length > 0)
             host = args[0];
 
-        ChatServer server = new ChatServer(host, 8081);
+        server = new ChatServer(host, 8081);
         server.startServer();
+    }
+
+    public synchronized static void removeUser(User user) {
+        server.deleteObserver(user);
+        users.remove(user);
+        server.setChangedAndNotify(
+                new Notification(user, Notification.Type.DELETE));
     }
 }
