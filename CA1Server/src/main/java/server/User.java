@@ -61,6 +61,11 @@ public class User implements Runnable, Observer {
         }
     }
 
+    public synchronized void write(String msg) {
+        writer.println(msg);
+        writer.flush();
+    }
+
     public String getUsername() {
         return username;
     }
@@ -73,9 +78,7 @@ public class User implements Runnable, Observer {
         return writer;
     }
 
-    public synchronized void write(String msg) {
-        writer.println(msg);
-        writer.flush();
+    public boolean isConnected() {
+        return socket.isConnected();
     }
-
 }
