@@ -77,7 +77,7 @@ public class ChatServer extends Observable {
                     break;
                 }
             }
-            if (!nameExists) {
+            if (nameExists) {
                 connection.close();
                 return;
             }
