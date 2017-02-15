@@ -5,9 +5,12 @@
  */
 package view;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -29,8 +32,8 @@ public class Client {
     private int port;
 
     /**
-     * Consol constructor called by consol mode
-     * In this mode the GUI is set to null
+     * Consol constructor called by consol mode In this mode the GUI is set to
+     * null
      *
      * @param username
      * @param server
@@ -55,5 +58,25 @@ public class Client {
         this.guiClient = guiClient;
     }
 
-    
+    //Start and connect to the server
+    public boolean start() {
+        
+        //connect to server
+        try {
+            socket = new Socket(server, port);
+        } catch (IOException ex) {
+            //if the connection fail
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Connection failed");
+            return false;
+        }
+        //if the connection succeeded
+        String serverConnected = "Connection succeeded" + socket.getInetAddress() + ": " + socket.getPort();
+        System.out.println(serverConnected);
+        
+        
+        
+        
+        return true;
+    }
 }
