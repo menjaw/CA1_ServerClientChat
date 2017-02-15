@@ -5,6 +5,8 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Observable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -22,7 +24,7 @@ public class ChatServer extends Observable {
 
     private final String host;
     private final int port;
-    public static ArrayList<User> users = new ArrayList<>();
+    public static List<User> users = Collections.synchronizedList(new ArrayList<>());
 
     private static ExecutorService executor = Executors.newCachedThreadPool();
 
