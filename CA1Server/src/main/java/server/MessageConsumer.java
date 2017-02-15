@@ -25,11 +25,12 @@ public class MessageConsumer implements Runnable {
         while (true) {
             try {
                 msg = messages.take();
-                if (msg.getReceiver() == null) {
+                if (msg.getReceiver() == null) { // ALL
                     for (User user : users) {
                         user.write(msg.toString());
                     }
-                } else {
+                } else { // Whisper
+                    msg.getSender().write(msg.toString());
                     msg.getReceiver().write(msg.toString());
                 }
             } catch (InterruptedException ex) {
