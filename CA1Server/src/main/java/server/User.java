@@ -1,9 +1,6 @@
 package server;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
+import java.io.*;
 import java.net.Socket;
 import java.util.Observable;
 import java.util.Observer;
@@ -18,19 +15,22 @@ public class User implements Runnable, Observer {
     private Socket socket;
     private String username;
     private BufferedReader reader;
-    private PrintStream writer;
+    private OutputStream writer;
+    private boolean connected;
 
     public User(Socket socket, String username) {
         this.socket = socket;
-        this.username = username.toLowerCase();
+        this.username = username;
 
         try {
-            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            writer = new PrintStream(socket.getOutputStream());
+            reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+            writer = this.socket.getOutputStream();
             writer.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        connected = true;
     }
 
     @Override
@@ -66,23 +66,40 @@ public class User implements Runnable, Observer {
     }
 
     public synchronized void write(String msg) {
-        writer.println(msg);
-        writer.flush();
+        try {
+            writer.write((msg + "\n").getBytes());
+            writer.flush();
+        } catch (IOException e) {
+            connected = false;
+        }
     }
 
     public String getUsername() {
         return username;
     }
 
-    public BufferedReader getReader() {
-        return reader;
-    }
-
-    public PrintStream getWriter() {
-        return writer;
-    }
-
     public boolean isConnected() {
-        return socket.isConnected();
+        // http://stackoverflow.com/a/11736683
+        // SOCKETS ARE STUPID!?!?!?!
+
+        // waits until disconnected..
+        //return socket.getInputStream().read() != -1;
+
+        /*
+        try {
+            // This method works but is fucked up like everything about a socket
+            socket.getOutputStream().write(new byte[1]);
+            socket.getOutputStream().flush();
+            socket.getOutputStream().write(new byte[1]);
+            socket.getOutputStream().flush();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+        */
+
+        // FUCK SOCKETS!
+        return connected;
     }
 }

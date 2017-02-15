@@ -4,10 +4,9 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -16,15 +15,15 @@ import java.util.concurrent.Executors;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 /**
- *
  * @author Jamie
  */
 public class ChatServer extends Observable {
 
     private final String host;
     private final int port;
-    public static List<User> users = Collections.synchronizedList(new ArrayList<>());
+    public static List<User> users = new CopyOnWriteArrayList<>();
 
     private static ExecutorService executor = Executors.newCachedThreadPool();
 
@@ -77,16 +76,19 @@ public class ChatServer extends Observable {
                 return;
             }
             User newGuy = new User(connection, strings[1]);
-            users.add(newGuy);
-            addObserver(newGuy);
-            setChangedAndNotify(new Notification(newGuy, Notification.Type.UPDATE));
-            executor.execute(newGuy);
+
+            setChangedAndNotify(new Notification(newGuy, Notification.Type
+                    .UPDATE));
 
             String okMsg = "OK";
             for (User user : users) {
                 okMsg += "#" + user.getUsername();
             }
             newGuy.write(okMsg);
+
+            addObserver(newGuy);
+            users.add(newGuy);
+            executor.execute(newGuy);
 
         }
     }
@@ -97,7 +99,11 @@ public class ChatServer extends Observable {
     }
 
     public static void main(String[] args) throws IOException {
-        ChatServer server = new ChatServer("localhost", 8081);
+        String host = "localhost";
+        if(args.length > 0)
+            host = args[0];
+
+        ChatServer server = new ChatServer(host, 8081);
         server.startServer();
     }
 }

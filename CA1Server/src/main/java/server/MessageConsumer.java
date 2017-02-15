@@ -9,15 +9,16 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import static server.ChatServer.users;
 
 /**
- *
  * @author Jamie
  */
 public class MessageConsumer implements Runnable {
 
-    public static BlockingQueue<Message> messages = new ArrayBlockingQueue<>(128);
+    public static BlockingQueue<Message> messages = new ArrayBlockingQueue<>
+            (128);
 
     @Override
     public void run() {
@@ -25,7 +26,7 @@ public class MessageConsumer implements Runnable {
         while (true) {
             try {
                 msg = messages.take();
-                if (msg.getReceiver() == null) { // ALL
+                if (!msg.hasReceiver()) { // ALL
                     for (User user : users) {
                         user.write(msg.toString());
                     }

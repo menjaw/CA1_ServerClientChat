@@ -63,6 +63,10 @@ public class Message {
         return data;
     }
 
+    public boolean hasReceiver() {
+        return receiver != null;
+    }
+
     @Override
     public String toString() {
         return "MSG#" + sender.getUsername() + "#" + data;

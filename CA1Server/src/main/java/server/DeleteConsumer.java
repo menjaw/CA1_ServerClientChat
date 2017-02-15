@@ -5,8 +5,7 @@
  */
 package server;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import static server.ChatServer.users;
 
 /**
  *
@@ -23,16 +22,18 @@ public class DeleteConsumer implements Runnable {
     @Override
     public void run() {
         while (true) {
-            for (User user : ChatServer.users) {
+            for (User user : users) {
                 if (!user.isConnected()) {
+                    System.out.println("Removing: " + user.getUsername());
                     cs.deleteObserver(user);
-                    ChatServer.users.remove(user);
+                    users.remove(user);
                     cs.setChangedAndNotify(
-                            new Notification(user, Notification.Type.UPDATE));
+                            new Notification(user, Notification.Type.DELETE));
                 }
             }
             try {
-                Thread.sleep(1000);
+                //System.out.println("Sleeping");
+                Thread.sleep(100);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
