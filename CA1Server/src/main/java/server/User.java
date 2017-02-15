@@ -48,7 +48,7 @@ public class User implements Runnable, Observer {
             String s;
             while ((s = reader.readLine()) != null) {
                 Message msg = new Message(this, s);
-                ChatServer.messages.put(msg);
+                MessageConsumer.messages.put(msg);
 
                 System.out.printf("%s, %s, %s\n",
                                   msg.getSender().getUsername(),

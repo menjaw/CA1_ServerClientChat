@@ -15,8 +15,6 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -33,7 +31,7 @@ public class ChatServer extends Observable {
     private final int port;
     public static ArrayList<User> users = new ArrayList<>();
 
-    public static BlockingQueue<Message> messages = new ArrayBlockingQueue<>(128);
+    
 
     private static ExecutorService executor = Executors.newCachedThreadPool();
 
@@ -66,67 +64,40 @@ public class ChatServer extends Observable {
 
         // Print the same line we read to the client
         PrintStream writer = new PrintStream(output);
-
+        boolean nameExists = false;
         String[] strings = line.split("#");
-        if (strings.length >= 1) {
-            switch (strings[0]) {
-                case "LOGIN":
-                    for (User user : users) {
-                        if (user.getUsername().equalsIgnoreCase(strings[1])) {
-                            //TODO: Fail
-                            break;
-                        }
-                    }
-                    //TODO: setup new userSocket 
-                    User newGuy = new User(connection, strings[1]);
-                    users.add(newGuy);
-                    addObserver(newGuy);
-                    notifyObservers(newGuy);
-                    executor.execute(newGuy);
 
-                    //TODO: OK message
-                    String okMsg = "OK#";
-                    for (User user : users) {
-                        okMsg.concat(user.getUsername() + "#");
+        if (strings.length >= 1
+                && strings[0].equalsIgnoreCase("LOGIN")) {
 
-                    }
-                    newGuy.write(okMsg);
+            for (User user : users) {
+                if (user.getUsername().equalsIgnoreCase(strings[1])) {
+                    writer.println("FAIL");
+                    nameExists = true;
                     break;
-                case "MSG":
-                    //TODO: What happens here now?
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
-    public static class MessageConsumer implements Runnable {
-
-        @Override
-        public void run() {
-            Message msg;
-            while (true) {
-                try {
-                    msg = messages.take();
-                    if (msg.getReceiver() == null) {
-                        for (User user : users) {
-                            user.write(msg.toString());
-                        }
-                    } else {
-                        msg.getReceiver().write(msg.toString());
-                    }
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(ChatServer.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+            if (!nameExists) {
+                connection.close();
+                return;
+            }
+            User newGuy = new User(connection, strings[1]);
+            users.add(newGuy);
+            addObserver(newGuy);
+            notifyObservers(newGuy);
+            executor.execute(newGuy);
+
+            String okMsg = "OK";
+            for (User user : users) {
+                okMsg += "#" + user.getUsername();
+            }
+            newGuy.write(okMsg);
+
         }
     }
 
     public static void main(String[] args) throws IOException {
         ChatServer server = new ChatServer("localhost", 8081);
-
         server.startServer();
     }
-
 }
