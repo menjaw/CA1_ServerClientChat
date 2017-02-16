@@ -18,7 +18,6 @@ public class User implements Runnable, Observer {
     private String username;
     private Scanner reader;
     private PrintWriter writer;
-    private boolean connected;
 
     public User(Socket socket, String username) {
         this.socket = socket;
@@ -30,8 +29,6 @@ public class User implements Runnable, Observer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        connected = true;
     }
 
     @Override

@@ -45,9 +45,13 @@ public class ChatServer extends Observable {
         System.out.println("Server listening on port " + port);
         executor.execute(new MessageConsumer());
 
-        //executor.execute(new DeleteConsumer(this));
         Socket connection;
         while ((connection = socket.accept()) != null) {
+            /*
+                TODO: rewrite HandleConnection to enter a new thread quickly
+                or make it so user can be created from a socket and handle it
+                when handing User over to ExecutorService
+             */
             handleConnection(connection);
         }
     }
