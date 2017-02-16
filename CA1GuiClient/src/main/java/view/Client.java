@@ -71,7 +71,7 @@ public class Client {
             return false;
         }
         //if the connection succeeded
-        String serverConnected = "Connection succeeded" + socket.getInetAddress() + ": " + socket.getPort();
+        String serverConnected = "Connection succeeded " + "\n" + socket.getInetAddress() + ": " + socket.getPort();
         System.out.println(serverConnected);
         
         
