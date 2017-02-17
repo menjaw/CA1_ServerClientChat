@@ -49,6 +49,8 @@ public class User implements Runnable, Observer {
         try {
             String s;
             while ((s = reader.nextLine()) != null) {
+                if(s.trim().length() <= 0) continue;
+
                 Message msg = new Message(this, s);
                 MessageConsumer.messages.put(msg);
 
