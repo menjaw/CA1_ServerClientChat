@@ -29,7 +29,7 @@ public class ChatServer extends Observable {
     private final int port;
     public static List<User> users = new CopyOnWriteArrayList<>();
 
-    private static ExecutorService executor = Executors.newCachedThreadPool();
+    public static ExecutorService executor = Executors.newCachedThreadPool();
 
     public ChatServer(String host, int port) {
         this.host = host;
@@ -52,54 +52,11 @@ public class ChatServer extends Observable {
                 or make it so user can be created from a socket and handle it
                 when handing User over to ExecutorService
              */
-            handleConnection(connection);
+            executor.execute(new connectionHandler(connection,this));
         }
     }
 
-    private void handleConnection(Socket connection) throws IOException {
-        OutputStream output = connection.getOutputStream();
-        InputStream input = connection.getInputStream();
-
-        // Read whatever comes in
-        Scanner reader = new Scanner(input);
-        String line = reader.nextLine();
-
-        // Print the same line we read to the client
-        PrintStream writer = new PrintStream(output);
-        boolean nameExists = false;
-        String[] strings = line.split("#");
-
-        if (strings.length >= 1
-                && strings[0].equalsIgnoreCase("LOGIN")) {
-
-            for (User user : users) {
-                if (user.getUsername().equalsIgnoreCase(strings[1])) {
-                    writer.println("FAIL");
-                    nameExists = true;
-                    break;
-                }
-            }
-            if (nameExists) {
-                connection.close();
-                return;
-            }
-            User newGuy = new User(connection, strings[1]);
-
-            setChangedAndNotify(new Notification(newGuy, Notification.Type
-                    .UPDATE));
-
-            String okMsg = "OK";
-            for (User user : users) {
-                okMsg += "#" + user.getUsername();
-            }
-            newGuy.write(okMsg);
-
-            addObserver(newGuy);
-            users.add(newGuy);
-            executor.execute(newGuy);
-
-        }
-    }
+    
 
     public synchronized void setChangedAndNotify(Notification n) {
         setChanged();
