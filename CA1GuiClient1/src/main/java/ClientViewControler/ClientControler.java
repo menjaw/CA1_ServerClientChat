@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 /**
  *
- * @author Bruger
+ * @author Mahnaz
  */
 public class ClientControler extends Observable {
 

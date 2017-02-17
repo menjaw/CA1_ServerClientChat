@@ -12,7 +12,8 @@ import java.util.Observer;
 
 /**
  *
- * @author Menja
+ * @author Mahnaz
+ * 
  */
 public class GuiClient extends javax.swing.JFrame implements Observer{
        String user;

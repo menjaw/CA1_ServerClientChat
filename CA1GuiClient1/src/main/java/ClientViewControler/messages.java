@@ -7,7 +7,7 @@ package ClientViewControler;
 
 /**
  *
- * @author Bruger
+ * @author Mahnaz
  */
 public class messages {
     String name ;
