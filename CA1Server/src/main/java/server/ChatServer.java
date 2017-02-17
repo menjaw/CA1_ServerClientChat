@@ -90,9 +90,9 @@ public class ChatServer extends Observable {
             }
             newGuy.write(okMsg);
 
-            addObserver(newGuy);
+            addObserver(newGuy);//??
             users.add(newGuy);
-            executor.execute(newGuy);
+            executor.execute(newGuy);//??
 
         }
     }
