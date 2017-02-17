@@ -5,19 +5,28 @@
  */
 package GUI_Chat_Menja;
 
-import networking.WritableGUI;
+import io.skaarup.Client;
+import io.skaarup.Message;
+import io.skaarup.Notification;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  *
  * @author Menja
  */
-public class GUI_Chat_Menja extends javax.swing.JFrame implements WritableGUI{
+public class GUI_Chat_Menja extends javax.swing.JFrame implements Observer {
+
+    Client c = null;
 
     /**
      * Creates new form GUI_Chat
      */
     public GUI_Chat_Menja() {
         initComponents();
+        c = new Client("localhost", 8081, "Menja");
+        c.addObserver(this);
+        c.connect();
     }
 
     /**
@@ -63,11 +72,21 @@ public class GUI_Chat_Menja extends javax.swing.JFrame implements WritableGUI{
 
         SendMessageButton.setText("Send");
         SendMessageButton.setName("SendButton"); // NOI18N
+        SendMessageButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SendMessageButtonActionPerformed(evt);
+            }
+        });
 
         ReceivingPort.setName("ReceivingPort"); // NOI18N
 
         ListenButton.setLabel("Listen");
         ListenButton.setName("ListenButton"); // NOI18N
+        ListenButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ListenButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -119,6 +138,28 @@ public class GUI_Chat_Menja extends javax.swing.JFrame implements WritableGUI{
     private void IpAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IpAddressActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_IpAddressActionPerformed
+//    MessageListener_Menja messageListener;
+    private void ListenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListenButtonActionPerformed
+        // TODO add your handling code here:
+//        DONT NEED THIS
+//        messageListener = new MessageListener_Menja(this, Integer.parseInt(ReceivingPort.getText()));
+//        
+//        messageListener.start();
+    }//GEN-LAST:event_ListenButtonActionPerformed
+
+//    MessageTransmitter_Menja mt = null;
+    private void SendMessageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SendMessageButtonActionPerformed
+        // TODO add your handling code here:
+//        if(mt == null) {
+//            mt = new MessageTransmitter_Menja(IpAddress.getText(), Integer.parseInt(TargetPort.getText()));
+//        } 
+//        mt.setMessage(MessageArea.getText());
+//        mt.start();
+        if (SendMessageField.getText().trim().length() != 0) {
+            c.sendMessage(new Message(SendMessageField.getText()));
+            SendMessageField.setText("");
+        }
+    }//GEN-LAST:event_SendMessageButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -151,10 +192,8 @@ public class GUI_Chat_Menja extends javax.swing.JFrame implements WritableGUI{
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GUI_Chat_Menja().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new GUI_Chat_Menja().setVisible(true);
         });
     }
 
@@ -170,7 +209,28 @@ public class GUI_Chat_Menja extends javax.swing.JFrame implements WritableGUI{
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void write(String s) {
-      MessageArea.append(s + System.lineSeparator());
+    public void update(Observable o, Object arg) {
+        if (!(arg instanceof Notification)) {
+            return;
+        }
+
+        Notification n = (Notification) arg;
+        switch (n.getType()) {
+            case MESSAGE:
+                Message m = n.getMessage();
+                MessageArea.setText(MessageArea.getText() + "\n" + m.username + ": " + m.text);
+                break;
+            case UPDATE:
+                // do something maybe
+                break;
+            case DELETE:
+                // do something maybe
+                break;
+        }
     }
+
+//    @Override
+//    public void write(String s) {
+//        MessageArea.append(s + System.lineSeparator());
+//    }
 }
