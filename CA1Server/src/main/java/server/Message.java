@@ -29,7 +29,6 @@ public class Message {
             data = "";
             for (int i = 2; i < strings.length; i++)
                 data += strings[i];
-
         } else {
             data = "Malformed message";
         }
@@ -37,7 +36,7 @@ public class Message {
 
     private void setReceiver(String[] strings) {
         if (strings.length <= 1) return;
-        if (strings[1].equalsIgnoreCase("all")) return;
+        if (strings[1].equalsIgnoreCase("ALL")) return;
 
         receiver = findUser(strings[1]);
     }
