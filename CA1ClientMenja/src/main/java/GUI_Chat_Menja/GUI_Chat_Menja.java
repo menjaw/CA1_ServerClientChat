@@ -5,11 +5,13 @@
  */
 package GUI_Chat_Menja;
 
+import networking.WritableGUI;
+
 /**
  *
  * @author Menja
  */
-public class GUI_Chat_Menja extends javax.swing.JFrame {
+public class GUI_Chat_Menja extends javax.swing.JFrame implements WritableGUI{
 
     /**
      * Creates new form GUI_Chat
@@ -166,4 +168,9 @@ public class GUI_Chat_Menja extends javax.swing.JFrame {
     private javax.swing.JTextField TargetPort;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void write(String s) {
+      MessageArea.append(s + System.lineSeparator());
+    }
 }

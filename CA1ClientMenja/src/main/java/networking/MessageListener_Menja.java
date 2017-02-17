@@ -5,7 +5,10 @@
  */
 package networking;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -15,9 +18,11 @@ import java.util.logging.Logger;
  *
  * @author Menja
  */
-public class MessageListener_Menja extends Thread{
-     ServerSocket serverSocket;
+public class MessageListener_Menja extends Thread {
+
+    ServerSocket serverSocket;
     int port;
+    WritableGUI gui;
 
     //constructors
     public MessageListener_Menja() {
@@ -29,8 +34,9 @@ public class MessageListener_Menja extends Thread{
     }
 
     //constructors
-    public MessageListener_Menja(int port) {
+    public MessageListener_Menja(WritableGUI gui, int port) {
         this.port = port;
+        this.gui = gui;
         try {
             serverSocket = new ServerSocket();
         } catch (IOException ex) {
@@ -40,16 +46,24 @@ public class MessageListener_Menja extends Thread{
 
     @Override
     public void run() {
-        
+
         try {
             //initilize the Socket variable
             //socket is a connection to the port
             Socket clientSocket;
-            
+
             //while loop that keeps on the accepting connection 
             //when it gets the connection it put it in the clientSocket variable
             //if the connection is null or close, we will leave the while-loop
-            while((clientSocket = serverSocket.accept()) != null){
+            while ((clientSocket = serverSocket.accept()) != null) {
+                InputStream inputStream = clientSocket.getInputStream();
+                
+                BufferedReader bufReader = new BufferedReader(new InputStreamReader(inputStream));
+                
+                String line = bufReader.readLine();
+                if (line != null) {
+                    gui.write(line);
+                }
                 
             }
         } catch (IOException ex) {
