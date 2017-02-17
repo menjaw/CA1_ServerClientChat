@@ -12,11 +12,35 @@ and open the template in the editor.
         <link href="/css/bootstrap.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
+        
+        <div class="col-sm-10">
         <h1>System Design</h1>
+        This system is divided up in two parts, the Server and the Client.
+        <h3>Server</h3>
+        The main class for the Server part is called ChatServer. This class has a 
+        public CopyOnWriteArrayList which stores the online users, and a public 
+        ExecutorService in the form of a newCachedThreadPool, that handles all 
+        running of threads in the server. Threads in the server system include: 
+        one for each new User loggin on the system, one for each ConnectionHandler,
+        and one for the MessageConsumer. When the ChatServer is started using 
+        the startServer() method, a socket is bound to the chosen host and port, 
+        then the MessageConsumer is executed and finally a new connectHandler is 
+        started for each new connection accepted on the socket.
+        <br>
+        The MessageConsumer has an ArrayBlockingQueue of Message, which all 
+        messages are added to by the server, and the MessageConsumer then handles 
+        sending them to their reciever. In order to add Messages to the queue, a 
+        Message class was made having both a sender and reciever of type User, and
+        a String containing the data to be sent. The User class has a socket, 
+        username, writer and reader. Furthermore it has a function called 
+        write(String msg), making it easier to write to the separate users by 
+        simply calling this method on each reciever.
+        
+        <h3>Clients</h3>
         
         
         
-        
-        <a href="index.html">Back</a>
+        <h3><a href="index.html">Back</a></h3>
+        </div>
     </body>
 </html>
