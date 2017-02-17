@@ -29,7 +29,7 @@ public class ChatServer extends Observable {
     private final int port;
     public static List<User> users = new CopyOnWriteArrayList<>();
 
-    private static ExecutorService executor = Executors.newCachedThreadPool();
+    public static ExecutorService executor = Executors.newCachedThreadPool();
 
     public ChatServer(String host, int port) {
         this.host = host;
@@ -45,13 +45,18 @@ public class ChatServer extends Observable {
         System.out.println("Server listening on port " + port);
         executor.execute(new MessageConsumer());
 
-        //executor.execute(new DeleteConsumer(this));
         Socket connection;
         while ((connection = socket.accept()) != null) {
-            handleConnection(connection);
+            /*
+                TODO: rewrite HandleConnection to enter a new thread quickly
+                or make it so user can be created from a socket and handle it
+                when handing User over to ExecutorService
+             */
+            executor.execute(new connectionHandler(connection,this));
         }
     }
 
+<<<<<<< HEAD
     private void handleConnection(Socket connection) throws IOException {
         OutputStream output = connection.getOutputStream();
         InputStream input = connection.getInputStream();
@@ -96,6 +101,9 @@ public class ChatServer extends Observable {
 
         }
     }
+=======
+    
+>>>>>>> 4d32c94a58c3d1e619dbfaca1cc1aaef4c6e55ca
 
     public synchronized void setChangedAndNotify(Notification n) {
         setChanged();

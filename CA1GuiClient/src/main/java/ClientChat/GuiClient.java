@@ -1,4 +1,4 @@
-package view;
+package ClientChat;
 
 import java.util.Observable;
 import java.util.Observer;
