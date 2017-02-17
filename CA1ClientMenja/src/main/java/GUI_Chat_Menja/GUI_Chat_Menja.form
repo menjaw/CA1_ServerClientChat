@@ -30,11 +30,12 @@
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="ListenButton" min="-2" pref="109" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="ReceivingPort" min="-2" pref="100" max="-2" attributes="0"/>
+                      <Component id="Hostname" min="-2" pref="200" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="IpAddress" min="-2" pref="279" max="-2" attributes="0"/>
+                      <Component id="Port" min="-2" pref="90" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="TargetPort" min="-2" pref="100" max="-2" attributes="0"/>
+                      <Component id="Username" min="-2" pref="183" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="SendMessageField" max="32767" attributes="0"/>
@@ -51,10 +52,10 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="TargetPort" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="ReceivingPort" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="Username" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="Hostname" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="ListenButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="IpAddress" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="Port" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="283" max="-2" attributes="0"/>
@@ -69,20 +70,20 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JTextField" name="IpAddress">
+    <Component class="javax.swing.JTextField" name="Port">
       <Properties>
-        <Property name="name" type="java.lang.String" value="IpAddress" noResource="true"/>
+        <Property name="name" type="java.lang.String" value="Port" noResource="true"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="IpAddressActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PortActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="TargetPort">
+    <Component class="javax.swing.JTextField" name="Username">
       <Properties>
-        <Property name="name" type="java.lang.String" value="TargetPort" noResource="true"/>
+        <Property name="name" type="java.lang.String" value="Username" noResource="true"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TargetPortActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="UsernameActionPerformed"/>
       </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
@@ -115,14 +116,14 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SendMessageButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="ReceivingPort">
+    <Component class="javax.swing.JTextField" name="Hostname">
       <Properties>
-        <Property name="name" type="java.lang.String" value="ReceivingPort" noResource="true"/>
+        <Property name="name" type="java.lang.String" value="Hostname" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="ListenButton">
       <Properties>
-        <Property name="label" type="java.lang.String" value="Listen"/>
+        <Property name="text" type="java.lang.String" value="Connect"/>
         <Property name="name" type="java.lang.String" value="ListenButton" noResource="true"/>
       </Properties>
       <Events>

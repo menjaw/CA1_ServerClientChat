@@ -24,9 +24,9 @@ public class GUI_Chat_Menja extends javax.swing.JFrame implements Observer {
      */
     public GUI_Chat_Menja() {
         initComponents();
-        c = new Client("localhost", 8081, "Menja");
-        c.addObserver(this);
-        c.connect();
+        Hostname.setText("localhost");
+        Port.setText("8081");
+        
     }
 
     /**
@@ -38,28 +38,28 @@ public class GUI_Chat_Menja extends javax.swing.JFrame implements Observer {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        IpAddress = new javax.swing.JTextField();
-        TargetPort = new javax.swing.JTextField();
+        Port = new javax.swing.JTextField();
+        Username = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         MessageArea = new javax.swing.JTextArea();
         SendMessageField = new javax.swing.JTextField();
         SendMessageButton = new javax.swing.JButton();
-        ReceivingPort = new javax.swing.JTextField();
+        Hostname = new javax.swing.JTextField();
         ListenButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        IpAddress.setName("IpAddress"); // NOI18N
-        IpAddress.addActionListener(new java.awt.event.ActionListener() {
+        Port.setName("Port"); // NOI18N
+        Port.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                IpAddressActionPerformed(evt);
+                PortActionPerformed(evt);
             }
         });
 
-        TargetPort.setName("TargetPort"); // NOI18N
-        TargetPort.addActionListener(new java.awt.event.ActionListener() {
+        Username.setName("Username"); // NOI18N
+        Username.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TargetPortActionPerformed(evt);
+                UsernameActionPerformed(evt);
             }
         });
 
@@ -78,9 +78,9 @@ public class GUI_Chat_Menja extends javax.swing.JFrame implements Observer {
             }
         });
 
-        ReceivingPort.setName("ReceivingPort"); // NOI18N
+        Hostname.setName("Hostname"); // NOI18N
 
-        ListenButton.setLabel("Listen");
+        ListenButton.setText("Connect");
         ListenButton.setName("ListenButton"); // NOI18N
         ListenButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -99,11 +99,12 @@ public class GUI_Chat_Menja extends javax.swing.JFrame implements Observer {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(ListenButton, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(ReceivingPort, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Hostname, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(IpAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Port, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(TargetPort, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(Username, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(SendMessageField)
                         .addGap(18, 18, 18)
@@ -115,10 +116,10 @@ public class GUI_Chat_Menja extends javax.swing.JFrame implements Observer {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(TargetPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ReceivingPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Hostname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ListenButton)
-                    .addComponent(IpAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Port, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -131,13 +132,13 @@ public class GUI_Chat_Menja extends javax.swing.JFrame implements Observer {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void TargetPortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TargetPortActionPerformed
+    private void UsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsernameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_TargetPortActionPerformed
+    }//GEN-LAST:event_UsernameActionPerformed
 
-    private void IpAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IpAddressActionPerformed
+    private void PortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PortActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_IpAddressActionPerformed
+    }//GEN-LAST:event_PortActionPerformed
 //    MessageListener_Menja messageListener;
     private void ListenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListenButtonActionPerformed
         // TODO add your handling code here:
@@ -145,6 +146,17 @@ public class GUI_Chat_Menja extends javax.swing.JFrame implements Observer {
 //        messageListener = new MessageListener_Menja(this, Integer.parseInt(ReceivingPort.getText()));
 //        
 //        messageListener.start();
+        String hostname = Hostname.getText();
+        int port = Integer.parseInt(Port.getText());
+        String username = Username.getText();
+
+        //giver data klienten skal bruge
+        c = new Client(hostname, port, username);
+        c.addObserver(this);
+        //connecter til server
+        c.connect();
+        MessageArea.setText("Logged in as: " + username + "\n");
+
     }//GEN-LAST:event_ListenButtonActionPerformed
 
 //    MessageTransmitter_Menja mt = null;
@@ -198,13 +210,13 @@ public class GUI_Chat_Menja extends javax.swing.JFrame implements Observer {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField IpAddress;
+    private javax.swing.JTextField Hostname;
     private javax.swing.JButton ListenButton;
     private javax.swing.JTextArea MessageArea;
-    private javax.swing.JTextField ReceivingPort;
+    private javax.swing.JTextField Port;
     private javax.swing.JButton SendMessageButton;
     private javax.swing.JTextField SendMessageField;
-    private javax.swing.JTextField TargetPort;
+    private javax.swing.JTextField Username;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 
