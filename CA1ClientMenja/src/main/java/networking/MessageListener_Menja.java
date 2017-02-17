@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,7 +23,7 @@ public class MessageListener_Menja extends Thread {
 
     ServerSocket serverSocket;
     int port;
-    WritableGUI gui;
+    WritableGUI_Menja gui;
 
     //constructors
     public MessageListener_Menja() {
@@ -34,7 +35,7 @@ public class MessageListener_Menja extends Thread {
     }
 
     //constructors
-    public MessageListener_Menja(WritableGUI gui, int port) {
+    public MessageListener_Menja(WritableGUI_Menja gui, int port) {
         this.port = port;
         this.gui = gui;
         try {
@@ -58,9 +59,9 @@ public class MessageListener_Menja extends Thread {
             while ((clientSocket = serverSocket.accept()) != null) {
                 InputStream inputStream = clientSocket.getInputStream();
                 
-                BufferedReader bufReader = new BufferedReader(new InputStreamReader(inputStream));
+                Scanner reader = new Scanner(inputStream);
                 
-                String line = bufReader.readLine();
+                String line = reader.nextLine();
                 if (line != null) {
                     gui.write(line);
                 }

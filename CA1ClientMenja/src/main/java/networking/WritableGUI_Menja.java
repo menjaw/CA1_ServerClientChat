@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package GUI_Chat_Menja;
+package networking;
 
 /**
  *
  * @author Menja
  */
-public class Client_Chat_Menja {
-    
+public interface WritableGUI_Menja {
+    void write (String s);
 }
