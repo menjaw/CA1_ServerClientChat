@@ -13,10 +13,10 @@ import java.net.Socket;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import static server.ChatServer.users;
 
 /**
- *
  * @author Jamie
  */
 public class connectionHandler implements Runnable {
@@ -60,7 +60,10 @@ public class connectionHandler implements Runnable {
                 }
                 User newGuy = new User(connection, strings[1]);
 
-                cs.setChangedAndNotify(new Notification(newGuy, Notification.Type.UPDATE));
+                users.add(newGuy);
+                cs.addObserver(newGuy);
+                cs.setChangedAndNotify(new Notification(newGuy, Notification
+                        .Type.UPDATE));
 
                 String okMsg = "OK";
                 for (User user : users) {
@@ -68,8 +71,6 @@ public class connectionHandler implements Runnable {
                 }
                 newGuy.write(okMsg);
 
-                cs.addObserver(newGuy);
-                users.add(newGuy);
                 cs.executor.execute(newGuy);
 
             }
