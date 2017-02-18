@@ -14,23 +14,62 @@ and open the template in the editor.
         <div>
             <h1>Digitalocean Setups</h1>
 
-            <h3>Linux Ubuntu Server 16.04.1 x 64</h3>
-            <ul>
-                <li>512 MB Memory / 20 GB Disk / AMS2</li>
-                <li>Ipv4: 178.62.251.222</li>
-                <li>Ipv6: Enable now</li>
-                <li>Private IP: Enable now</li>
-                <li>Floating IP: Enable now</li>
-            </ul>
-            
-            <h4>Users</h4>
             <div>
-                <img src="images/UbuntuUsers.PNG" alt="Users" width="500"/>
-                <p>De er alle oprettet i gruppen Sudo</p>
-                <img src="images/UbuntuUserGroup.PNG" alt="group" width="500"/>
+                <h3>Linux Ubuntu Server 16.04.1 x 64</h3>
+                <ul>
+                    <li>512 MB Memory / 20 GB Disk / AMS2</li>
+                    <li>Ipv4: 178.62.251.222</li>
+                    <li>Ipv6: Enable now</li>
+                    <li>Private IP: Enable now</li>
+                    <li>Floating IP: Enable now</li>
+                </ul>
             </div>
 
+            <h4>Ubuntu users</h4>
+            <div>
+                <img src="images/UbuntuUsers.PNG" alt="Users" width="500"/>
+            </div>
 
+            <div>   
+                <h3>Nginx Server</h3>
+                <div>
+                    <h4>Install Nginx</h4>
+                    <img src="images/UpdateInstallNginx.PNG" alt="nginx" width="500"/>
+                </div>
+
+                <div>
+                    <h4>Proxy settings</h4>
+                    <p>
+                        Da den kun skal bruges som en proxy server skal Nginx serveren konfigureres til, 
+                        at videresende HTTP data fra port 80 til en Java server. 
+                    </p>
+                    <p>
+                        I dette tilfælde er det en Tomcat server som lytter på port 8080, på samme maskine. 
+                        Det håndteres ved at åbne en teksteditor (nano), og ændre i filen default under location.
+                    </p>
+                    <img src="images/ProxySettingsNginx.PNG" alt="proxy" width="500"/>
+                </div>   
+
+                <div>
+                    <h4>Certifikat</h4>    
+
+                    <p>Installering af LetsEncrypt</p>
+                    <img src="images/InstallLetsEncryptNginx.png" alt=""/>
+
+                    <p>Specificering af domain og path</p>
+                    <img src="images/LetsIncryptNginx.png" alt=""/>
+                    <img src="images/LetsIncryptDomainNginx.png" alt=""/>
+
+                    <p>Redirect and SSL</p>
+                    <img src="images/RedirectAndSSL.png" alt=""/> 
+                    <div><img src="images/Redirect.png" alt=""/></div>
+                </div>
+            </div>
+
+            <div>
+                <h3>Tomcat</h3>
+                <img src="images/InstallTomcat.PNG" alt=""/>
+            </div>
 
         </div>
 
