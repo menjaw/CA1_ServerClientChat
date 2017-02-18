@@ -28,19 +28,19 @@
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
-                      <Component id="ListenButton" min="-2" pref="109" max="-2" attributes="0"/>
+                      <Component id="connectButton" min="-2" pref="109" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="Hostname" min="-2" pref="200" max="-2" attributes="0"/>
+                      <Component id="hostnameField" min="-2" pref="200" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="Port" min="-2" pref="90" max="-2" attributes="0"/>
+                      <Component id="portField" min="-2" pref="90" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="Username" min="-2" pref="183" max="-2" attributes="0"/>
+                      <Component id="usernameField" min="-2" pref="183" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <Component id="SendMessageField" max="32767" attributes="0"/>
+                      <Component id="sendMessageField" max="32767" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="SendMessageButton" min="-2" max="-2" attributes="0"/>
+                      <Component id="sendMessageButton" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
@@ -52,17 +52,17 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="Username" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="Hostname" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="ListenButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="Port" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="usernameField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="hostnameField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="connectButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="portField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="283" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="SendMessageField" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="SendMessageButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="sendMessageField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="sendMessageButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="21" max="32767" attributes="0"/>
           </Group>
@@ -70,20 +70,20 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JTextField" name="Port">
+    <Component class="javax.swing.JTextField" name="portField">
       <Properties>
-        <Property name="name" type="java.lang.String" value="Port" noResource="true"/>
+        <Property name="name" type="java.lang.String" value="portField" noResource="true"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PortActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="portFieldActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="Username">
+    <Component class="javax.swing.JTextField" name="usernameField">
       <Properties>
-        <Property name="name" type="java.lang.String" value="Username" noResource="true"/>
+        <Property name="name" type="java.lang.String" value="usernameField" noResource="true"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="UsernameActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="usernameFieldActionPerformed"/>
       </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
@@ -93,41 +93,41 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTextArea" name="MessageArea">
+        <Component class="javax.swing.JTextArea" name="messageArea">
           <Properties>
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>
-            <Property name="name" type="java.lang.String" value="MessageArea" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="messageArea" noResource="true"/>
           </Properties>
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JTextField" name="SendMessageField">
+    <Component class="javax.swing.JTextField" name="sendMessageField">
       <Properties>
-        <Property name="name" type="java.lang.String" value="SendMessageField" noResource="true"/>
+        <Property name="name" type="java.lang.String" value="sendMessageField" noResource="true"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="SendMessageButton">
+    <Component class="javax.swing.JButton" name="sendMessageButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Send"/>
         <Property name="name" type="java.lang.String" value="SendButton" noResource="true"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SendMessageButtonActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sendMessageButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="Hostname">
+    <Component class="javax.swing.JTextField" name="hostnameField">
       <Properties>
-        <Property name="name" type="java.lang.String" value="Hostname" noResource="true"/>
+        <Property name="name" type="java.lang.String" value="hostnameField" noResource="true"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="ListenButton">
+    <Component class="javax.swing.JButton" name="connectButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Connect"/>
-        <Property name="name" type="java.lang.String" value="ListenButton" noResource="true"/>
+        <Property name="name" type="java.lang.String" value="connectButton" noResource="true"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ListenButtonActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="connectButtonActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
