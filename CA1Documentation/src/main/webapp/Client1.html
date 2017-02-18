@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div>
+            <h1>Client 1</h1>
+
+            <ul>
+                <li>Applikationen er oprettet som et Maven Project.
+                    <div>
+                        <img src="images/Client1GUI.PNG" alt="App" width="250" />
+                    </div>
+                </li>
+                <li>Systemet består af 3 Classes: ClientControler.java, messages.java, og en GuiClient.java 
+                    <div> <img src="images/Client1FileStructure.PNG" alt="Files"/></div></li>
+                <li> 
+                    <p>Der skabes forbindelse mellem Client og Server igennem ClientControler.java ved brug af en Socket</p>     
+                    <p>Beskeder mellem Client og Server bliver afsendt som Strings med en PrintWriter, og modtages med en Scanner</p>
+                    <div><img src="images/Client1Code.jpg" alt="Code" width="450"/></div>    
+                </li>
+                <li>                
+                    <p>Når serveren afsender en besked til klienten, gemmes denne i en String</p>
+                    <p>For at analysere den besked Client modtager fra serveren, splittes Stringen med "#", som aftalt i protokollen</p>
+                </li>
+                <li>
+                    <p>For at systemet kan modtage flere beskeder, addes de til det relaterede Array i en Tråd, sådan at der ikke opstår race condition, og der mistet beskeder, eller programmet crasher</p>
+                    <div>
+                        <img src="images/Client1Code2.jpg" alt="" width="550"/>
+                    </div>
+                </li>
+                <li></li>
+            </ul>
+            <h3><a href="index.html">Back</a></h3>
+        </div>
+
+    </body>
+</html>

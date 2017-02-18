@@ -26,7 +26,7 @@ public class GUI_Chat_Menja extends javax.swing.JFrame implements Observer {
         initComponents();
         Hostname.setText("localhost");
         Port.setText("8081");
-        
+
     }
 
     /**
