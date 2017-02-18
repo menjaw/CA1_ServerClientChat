@@ -17,7 +17,7 @@ import java.util.Observer;
  */
 public class GUI_Chat_Menja extends javax.swing.JFrame implements Observer {
 
-    Client c = null;
+    Client clientLibrary = null;
 
     /**
      * Creates new form GUI_Chat
@@ -139,38 +139,38 @@ public class GUI_Chat_Menja extends javax.swing.JFrame implements Observer {
     private void portFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_portFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_portFieldActionPerformed
-//    MessageListener_Menja messageListener;
+
     private void connectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectButtonActionPerformed
         // TODO add your handling code here:
-//        DONT NEED THIS
-//        messageListener = new MessageListener_Menja(this, Integer.parseInt(ReceivingPort.getText()));
-//        
-//        messageListener.start();
         String hostname = hostnameField.getText();
         int port = Integer.parseInt(portField.getText());
         String username = usernameField.getText();
 
         //giver data klienten skal bruge
-        c = new Client(hostname, port, username);
-        c.addObserver(this);
+        clientLibrary = new Client(hostname, port, username);
+        clientLibrary.addObserver(this);
         //connecter til server
-        c.connect();
+        clientLibrary.connect();
         messageArea.setText("Logged in as: " + username + "\n");
 
+//        DONT NEED THIS
+//        messageListener = new MessageListener_Menja(this, Integer.parseInt(ReceivingPort.getText()));    
+//        messageListener.start();
     }//GEN-LAST:event_connectButtonActionPerformed
 
 //    MessageTransmitter_Menja mt = null;
     private void sendMessageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendMessageButtonActionPerformed
         // TODO add your handling code here:
+        if (sendMessageField.getText().trim().length() != 0) {
+            clientLibrary.sendMessage(new Message(sendMessageField.getText()));
+            sendMessageField.setText("");
+        }
+
 //        if(mt == null) {
 //            mt = new MessageTransmitter_Menja(IpAddress.getText(), Integer.parseInt(TargetPort.getText()));
 //        } 
 //        mt.setMessage(MessageArea.getText());
 //        mt.start();
-        if (sendMessageField.getText().trim().length() != 0) {
-            c.sendMessage(new Message(sendMessageField.getText()));
-            sendMessageField.setText("");
-        }
     }//GEN-LAST:event_sendMessageButtonActionPerformed
 
     /**
