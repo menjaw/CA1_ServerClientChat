@@ -24,7 +24,10 @@ public class ChatServerTest {
 
     @Before
     public void setUp() throws Exception {
-        serverPort = random.nextInt(1000) + 7000; // Multiple CS
+        if (cs == null)
+            serverPort = random.nextInt(1000) + 7000; // Multiple CS
+        else
+            serverPort++;
         //serverPort = 7890; // Single CS
         //if(cs == null) { // Single CS
         cs = new ChatServer(hostName, serverPort);
