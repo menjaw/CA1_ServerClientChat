@@ -18,8 +18,10 @@ public class User implements Runnable, Observer {
     private String username;
     private Scanner reader;
     private PrintWriter writer;
+    public ChatServer cs;
 
-    public User(Socket socket, String username) {
+    public User(ChatServer cs, Socket socket, String username) {
+        this.cs = cs;
         this.socket = socket;
         this.username = username;
 
@@ -52,7 +54,7 @@ public class User implements Runnable, Observer {
                 if(s.trim().length() <= 0) continue;
 
                 Message msg = new Message(this, s);
-                MessageConsumer.messages.put(msg);
+                cs.mc.messages.put(msg);
 
                 System.out.printf("%s, %s, %s\n",
                                   msg.getSender().getUsername(),
@@ -61,7 +63,7 @@ public class User implements Runnable, Observer {
                                   msg.getData()); // debug
             }
         } catch (Exception e) {
-            ChatServer.removeUser(this);
+            cs.removeUser(this);
         }
     }
 

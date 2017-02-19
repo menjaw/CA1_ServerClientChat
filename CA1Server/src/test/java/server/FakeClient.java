@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -42,7 +43,7 @@ public class FakeClient {
 
     private void setupReceiver() {
         Thread t = new Thread(() -> {
-            if(!running) return;
+            if (!running) return;
             try {
                 reader = new Scanner(socket.getInputStream());
             } catch (IOException e) {
@@ -50,13 +51,18 @@ public class FakeClient {
             }
 
             String s;
-            while (running && (s = reader.nextLine()) != null) {
-                if (!messages.offer(s)) {
-                    System.out.println("too many messages in "
-                                               + this.getClass().getName()
-                                               + " ArrayBlockingQueue");
+            try {
+                while ((s = reader.nextLine()) != null) {
+                    if (!running) return;
+                    if (!messages.offer(s)) {
+                        System.out.println("too many messages in "
+                                                   + this.getClass().getName()
+                                                   + " ArrayBlockingQueue");
+                    }
                 }
+            } catch (NoSuchElementException ignored) {
             }
+
         });
         t.start();
     }

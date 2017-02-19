@@ -14,8 +14,6 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static server.ChatServer.users;
-
 /**
  * @author Jamie
  */
@@ -37,7 +35,12 @@ public class connectionHandler implements Runnable {
 
             // Read whatever comes in
             Scanner reader = new Scanner(input);
-            String line = reader.nextLine();
+            String line;
+            try {
+                line = reader.nextLine();
+            } catch (Exception ignored) {
+                return;
+            }
 
             // Print the same line we read to the client
             PrintStream writer = new PrintStream(output);
@@ -47,7 +50,7 @@ public class connectionHandler implements Runnable {
             if (strings.length >= 1
                     && strings[0].equalsIgnoreCase("LOGIN")) {
 
-                for (User user : users) {
+                for (User user : cs.users) {
                     if (user.getUsername().equalsIgnoreCase(strings[1])) {
                         writer.println("FAIL");
                         nameExists = true;
@@ -58,15 +61,15 @@ public class connectionHandler implements Runnable {
                     connection.close();
                     return;
                 }
-                User newGuy = new User(connection, strings[1]);
+                User newGuy = new User(cs, connection, strings[1]);
 
-                users.add(newGuy);
+                cs.users.add(newGuy);
                 cs.addObserver(newGuy);
                 cs.setChangedAndNotify(new Notification(newGuy, Notification
                         .Type.UPDATE));
 
                 String okMsg = "OK";
-                for (User user : users) {
+                for (User user : cs.users) {
                     okMsg += "#" + user.getUsername();
                 }
                 newGuy.write(okMsg);

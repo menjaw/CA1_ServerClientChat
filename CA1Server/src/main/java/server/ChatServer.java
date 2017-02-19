@@ -23,9 +23,12 @@ public class ChatServer extends Observable {
 
     private final String host;
     private final int port;
-    public static List<User> users = new CopyOnWriteArrayList<>();
+    public List<User> users = new CopyOnWriteArrayList<>();
 
-    public static ExecutorService executor = Executors.newCachedThreadPool();
+    public ExecutorService executor = Executors.newCachedThreadPool();
+    public MessageConsumer mc;
+
+    private boolean running;
 
     public ChatServer(String host, int port) {
         this.host = host;
@@ -33,22 +36,34 @@ public class ChatServer extends Observable {
     }
 
     public void startServer() throws IOException {
+        running = true;
         // Create a new unbound socket
         ServerSocket socket = new ServerSocket();
         // Bind to a port number
         socket.bind(new InetSocketAddress(host, port));
 
         System.out.println("Server listening on port " + port);
-        executor.execute(new MessageConsumer());
+        mc = new MessageConsumer(this);
+        executor.execute(mc);
 
         Socket connection;
         while ((connection = socket.accept()) != null) {
+            if (!running) return;
             /*
                 TODO: rewrite HandleConnection to enter a new thread quickly
                 or make it so user can be created from a socket and handle it
                 when handing User over to ExecutorService
              */
-            executor.execute(new connectionHandler(connection,this));
+            executor.execute(new connectionHandler(connection, this));
+        }
+    }
+
+    public void stopServer() {
+        running = false;
+        try {
+            new Socket().connect(new InetSocketAddress(host, port));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -68,10 +83,10 @@ public class ChatServer extends Observable {
         server.startServer();
     }
 
-    public synchronized static void removeUser(User user) {
-        server.deleteObserver(user);
+    public synchronized void removeUser(User user) {
+        deleteObserver(user);
         users.remove(user);
-        server.setChangedAndNotify(
+        setChangedAndNotify(
                 new Notification(user, Notification.Type.DELETE));
     }
 }

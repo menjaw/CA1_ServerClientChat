@@ -10,9 +10,11 @@ public class Message {
     private User sender;
     private User receiver = null;
     private String data;
+    private ChatServer cs;
 
     public Message(User sender, String s) {
         this.sender = sender;
+        cs = sender.cs;
         String[] strings = s.split("#");
         setReceiver(strings);
         setData(strings);
@@ -42,9 +44,9 @@ public class Message {
     }
 
     private User findUser(String s) {
-        for (int i = 0; i < ChatServer.users.size(); i++) {
-            if(ChatServer.users.get(i).getUsername().equalsIgnoreCase(s))
-                return ChatServer.users.get(i);
+        for (int i = 0; i < cs.users.size(); i++) {
+            if(cs.users.get(i).getUsername().equalsIgnoreCase(s))
+                return cs.users.get(i);
         }
 
         return null;

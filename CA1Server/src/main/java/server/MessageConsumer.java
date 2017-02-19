@@ -10,15 +10,20 @@ import java.util.concurrent.BlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static server.ChatServer.users;
 
 /**
  * @author Jamie
  */
 public class MessageConsumer implements Runnable {
 
-    public static BlockingQueue<Message> messages = new ArrayBlockingQueue<>
+    public BlockingQueue<Message> messages = new ArrayBlockingQueue<>
             (128);
+
+    private ChatServer cs;
+
+    public MessageConsumer(ChatServer cs) {
+        this.cs = cs;
+    }
 
     @Override
     public void run() {
@@ -27,7 +32,7 @@ public class MessageConsumer implements Runnable {
             try {
                 msg = messages.take();
                 if (!msg.hasReceiver()) { // ALL
-                    for (User user : users) {
+                    for (User user : cs.users) {
                         user.write(msg.toString());
                     }
                 } else { // Whisper
