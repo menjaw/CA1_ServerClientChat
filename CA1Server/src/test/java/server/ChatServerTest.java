@@ -1,15 +1,13 @@
 package server;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.util.Random;
-import java.util.Scanner;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -19,118 +17,158 @@ import static org.junit.Assert.assertTrue;
  */
 public class ChatServerTest {
 
-
-    private ChatServer cs;
-    private Socket s1;
-
-    private Scanner r1;
-    private PrintWriter w1;
+    private static ChatServer cs = null;
     private Random random = new Random();
     private int serverPort;
+    private static String hostName = "localhost";
 
     @Before
     public void setUp() throws Exception {
-        serverPort = random.nextInt(1000) + 6000;
-        cs = new ChatServer("localhost", serverPort);
-        new Thread(() -> {
+        serverPort = random.nextInt(1000) + 7000; // Multiple CS
+        //serverPort = 7890; // Single CS
+        //if(cs == null) { // Single CS
+        cs = new ChatServer(hostName, serverPort);
+        Thread t = new Thread(() -> {
             try {
                 cs.startServer();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }).start();
-        s1 = new Socket();
-        s1.connect(new InetSocketAddress("localhost", serverPort));
+        });
+        t.start();
+        //} // Single CS
+    }
 
-        r1 = new Scanner(s1.getInputStream());
-        w1 = new PrintWriter(s1.getOutputStream(), true);
+    @After
+    public void tearDown() throws Exception {
     }
 
     @Test
     public void startServer() throws Exception {
-        assertTrue(s1.isConnected());
+        FakeClient fc = new FakeClient(hostName, serverPort);
+        fc.connect();
+        assertTrue(fc.socket.isConnected());
+        fc.writer.println("LOGIN#startServer()");
+        fc.disconnect();
     }
 
     @Test
-    public void login() throws Exception {
-        w1.println("LOGIN#S1");
-        String s = r1.nextLine();
-        //System.out.println(s);
-        assertTrue("server response should contain 'OK'", s.contains
-                ("OK"));
+    public void loginCommand() throws Exception {
+        FakeClient fc = new FakeClient(hostName, serverPort);
+        fc.connect();
+        fc.writer.println("LOGIN#login()");
+        assertFalse("server response should not contain 'FALSE'",
+                    fc.messages.take().contains("FALSE"));
+        fc.disconnect();
     }
 
     @Test
-    public void updateClient() throws Exception {
-        Socket s2 = new Socket();
-        s2.connect(new InetSocketAddress("localhost", serverPort));
+    public void updateCommand() throws Exception {
+        FakeClient fc1 = new FakeClient(hostName, serverPort);
+        fc1.connect();
 
-        Scanner r2 = new Scanner(s2.getInputStream());
-        PrintWriter w2 = new PrintWriter(s2.getOutputStream(), true);
+        FakeClient fc2 = new FakeClient(hostName, serverPort);
+        fc2.connect();
 
-        w1.println("LOGIN#updateClient(1)");
-        r1.nextLine();
+        fc1.writer.println("LOGIN#updateClient(1)");
+        fc1.messages.take(); // clear OK#
 
-        w2.println("LOGIN#updateClient(2)");
-        String res1, res2;
+        fc2.writer.println("LOGIN#updateClient(2)");
+        fc2.messages.take(); // clear OK#
 
-        if (r2.hasNextLine()) {
-            res2 = r2.nextLine();
-            //System.out.println(res2);
-            assertTrue(res2.contains("updateClient(1)"));
-        }
+        assertTrue(fc1.messages.take().equals("UPDATE#updateClient(2)"));
 
-        if (r1.hasNextLine()) {
-            res1 = r1.nextLine();
-            //System.out.println(res1);
-            assertTrue(res1.contains("updateClient(2)"));
-        }
+        fc1.disconnect();
+        fc2.disconnect();
     }
 
     @Test
-    public void messageAll() throws Exception {
-        w1.println("LOGIN#messageAll()");
-        r1.nextLine();
-        w1.println("MSG#ALL#test all message");
-        String s = r1.nextLine();
-        //System.out.println(s);
-        assertTrue(s.contains("MSG#messageAll()#test all message"));
+    public void okCommand() throws Exception {
+        FakeClient fc = new FakeClient(hostName, serverPort);
+        fc.connect();
+
+        fc.writer.println("LOGIN#okCommand()");
+        String msg = fc.messages.take();
+        assertTrue(msg.startsWith("OK#"));
+        assertTrue(msg.contains("okCommand()"));
+        fc.disconnect();
     }
 
     @Test
-    public void messageSelf() throws Exception {
-        w1.println("LOGIN#messageSelf()");
-        r1.nextLine();
-        w1.println("MSG#messageSelf#test self message");
-        String s = r1.nextLine();
-        //System.out.println(s);
-        assertTrue(s.contains("MSG#messageSelf()#test self message"));
+    public void msgAllCommand() throws Exception {
+        FakeClient fc = new FakeClient(hostName, serverPort);
+        fc.connect();
+        fc.writer.println("LOGIN#messageAll()");
+        fc.messages.take();
+        fc.writer.println("MSG#ALL#test all message");
+        assertTrue(fc.messages.take()
+                              .equals("MSG#messageAll()#test all message"));
+        fc.disconnect();
     }
 
     @Test
-    public void messageOther() throws Exception {
-        /*Socket s2 = new Socket();
-        s2.connect(new InetSocketAddress("localhost", serverPort));
+    public void msgSelfCommand() throws Exception {
+        FakeClient fc = new FakeClient(hostName, serverPort);
+        fc.connect();
+        fc.writer.println("LOGIN#messageSelf()");
+        fc.messages.take(); // clear OK!
+        fc.writer.println("MSG#messageSelf#test self message");
+        assertTrue(fc.messages.take()
+                              .equals("MSG#messageSelf()#test self message"));
+        fc.disconnect();
+    }
 
-        Scanner r2 = new Scanner(s2.getInputStream());
-        PrintWriter w2 = new PrintWriter(s2.getOutputStream(), true);
+    @Test
+    public void msgOtherCommand() throws Exception {
+        FakeClient fc1 = new FakeClient(hostName, serverPort);
+        fc1.connect();
 
-        w1.println("LOGIN#messageOther(1)");
-        r1.nextLine();
+        FakeClient fc2 = new FakeClient(hostName, serverPort);
+        fc2.connect();
 
-        w2.println("LOGIN#messageOther(2)");
-        String res1, res2;
+        fc1.writer.println("LOGIN#messageOther(1)");
+        fc1.messages.take(); // clear OK#
 
-        if (r2.hasNextLine()) {
-            res2 = r2.nextLine();
-            //System.out.println(res2);
-            assertTrue(res2.contains("updateClient(1)"));
-        }
+        fc2.writer.println("LOGIN#messageOther(2)");
+        fc2.messages.take(); // clear OK#
+        fc1.messages.take(); // clear UPDATE#
 
-        if (r1.hasNextLine()) {
-            res1 = r1.nextLine();
-            //System.out.println(res1);
-            assertTrue(res1.contains("updateClient(2)"));
-        }*/
+        // Send message from FakeClient 1 to 2
+        fc1.writer.println("MSG#messageOther(2)#Hello1");
+        fc1.messages.take(); // clear own message
+        assertTrue(fc2.messages.take()
+                               .equals("MSG#messageOther(1)#Hello1"));
+
+        // Send message from FakeClient 2 to 1
+        fc2.writer.println("MSG#messageOther(1)#Hello2");
+        fc2.messages.take(); // clear own message
+        assertTrue(fc1.messages.take()
+                               .equals("MSG#messageOther(2)#Hello2"));
+        fc1.disconnect();
+        fc2.disconnect();
+    }
+
+    @Test
+    public void deleteCommand() throws Exception {
+        FakeClient fc1 = new FakeClient(hostName, serverPort);
+        fc1.connect();
+
+        FakeClient fc2 = new FakeClient(hostName, serverPort);
+        fc2.connect();
+
+        fc1.writer.println("LOGIN#deleteCommand(1)");
+        fc1.messages.take(); // clear OK#
+
+        fc2.writer.println("LOGIN#deleteCommand(2)");
+        fc2.messages.take(); // clear OK#
+        fc1.messages.take(); // clear UPDATE#
+
+        fc1.disconnect();
+        System.out.println(fc2.messages.take());
+        assertTrue(fc2.messages.take()
+                               .equals("DELETE#deleteCommand(1)"));
+
+        fc2.disconnect();
+
     }
 }
