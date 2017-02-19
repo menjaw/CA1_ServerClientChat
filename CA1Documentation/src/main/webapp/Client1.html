@@ -78,6 +78,69 @@ and open the template in the editor.
                         <img src="images/Client1Code6.jpg" alt="update" width="500"/>
                     </div>
                 </li>
+
+                <li>
+                    <h3>TESTS</h3>
+                    <p>
+                        I test packages lavede vi en package der hedder det samme den package der inholder den classe der vi vil lave test til, 
+                        laver vi en junit test, i den junitest i toppen repræsenterer vores classe som vi vil lave test til der hedder clientContrler 
+                        og en tråd der vil vores forbindelse fra servern til clienten og en scanner der printer alt der kommer fra clienten. 
+                    </p>
+
+                    <div>
+                        <img src="images/Client1Junit.jpg" alt="Junit" width="500"/>
+                    </div>
+
+                    <p>
+                        I @beforeclass forbinder vores serveren til det bestemte client. Det gøre vi med den host og port adress. 
+                        Forbindelse med client og scanner i sin egen try og catch og tråden i sin try og catch.
+                        I AfterClass slutter tråden efter hver sin forbindelse.
+                    </p>
+
+                    <div>
+                        <img src="images/Client1Junit1.jpg" alt="Junit" width="500"/>
+                    </div>
+
+                    <p>
+                        Så laver vi to overwrite 2 test methoder, da vi har kun 2 methode i vores clientControler: 
+                    </p>
+                    <ul>
+                        <li>login()</li>
+                        <li>sendbesked()</li>
+                    </ul>
+                    <div>
+                        <img src="images/Client1Junit2.jpg" alt="junit" width="500"/>
+                    </div>
+                    <p>
+                        i login() test method bruger login method som er vores clientControler og login med et navn, 
+                        så sætter vi tråden til sleep for at serveren når få beskeden fra clienten, den besked der serveren får, 
+                        gemmes i en string der vi har repræsenteret den helt op i vores JUnitTest, den spliter vi med ”#”, 
+                        og lægger vi den i en String array, og så bruge den assertTrue med at teste nummer 0 i den string Arraye inholder vores ”LOGIN” 
+                    </p>
+                    <div>
+                        <img src="images/Client1Junit3.jpg" alt="junit" width="500"/>
+                    </div>
+
+
+
+                    <p>
+                        i sendBesked() test method bruger sendBesked method som er vores clientControler og sender besked med 2 parameter, 
+                        som er bruger navn og besked, så sætter vi tråden til sleep for at serveren når få beskeden fra clienten, 
+                        den besked der serveren får, gemmes i en String der vi har repræsenteret den helt op i vores JUnitTest, 
+                        den spliter vi med ”#”, og lægger vi den i en String array, og så bruge den assertTrue med at teste nummer 0 i String Arrayet, 
+                        og den skal indholde ”MSG”  
+                    </p>
+                    <div>
+                        <img src="images/Client1Junit4.jpg" alt="junit" width="500"/>
+                    </div>
+
+                    <p>
+                        Til sidst højre clicker vi på den JUnit test og klicker vi Test file og så skal vi få den result besked der viser at test er rigtigt.
+                    </p>
+                    <div>
+                        <img src="images/Client1Junit5.jpg" alt="junit" width="500"/>
+                    </div>
+                </li>
             </ul>
             <h3><a href="SystemDesign.html">Back</a></h3>
             <h3><a href="index.html">Home</a></h3>
